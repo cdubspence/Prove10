@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avengers Sign Up</title>
+</head>
+<body>
+<div class="container">
+    <h1 style="text-align: center; background-color: rgb(201, 94, 94)">
+        Want to be an Avenger? Sign Up Below!</h1>
+    <h2>Current Team</h2>
+    <ul id="nameList" class="">
+    </ul>
+    <h2>New Hero</h2>
+    <div class="actions_container">
+        Name <input type="text" id="newName">
+        Abilities <input type="text" id="power">
+        <button id="submitName" onclick="submitName()">Submit</button>
+    </div>
+</div>
+<script>
+    const populateList = () => {
+    const nameList = document.getElementById('nameList')
+
+    fetch('/fetchAll')
+        .then(res => res.json())
+        .then(data => {
+            // Clear the list first
+            while (nameList.firstChild) nameList.firstChild.remove()
+
+            // Repopulate the list
+            for (const avenger of data.avengers) {
+                const li = document.createElement('li')
+                li.appendChild(document.createTextNode(avenger.name, avenger.power))
+                nameList.appendChild(li)
+            }
+            // for (const avenger of data.avengers) {
+            //     const li = document.createElement('li')
+            //     li.appendChild(document.createTextNode(avenger.power))
+            //     nameList.appendChild(li)
+            // }
+        })
+        .catch(err => {
+            console.error(err)
+        })
+}
+
+const submitName = () => {
+    const newName = document.getElementById('newName').value // Grab the value of our new name
+    const power = document.getElementById('power').value // Grab the value of our new name
+
+    fetch('/insert', {
+        method: 'POST', // Send a POST request
+        headers: {
+            // Set the Content-Type, since our server expects JSON
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ newName, power })
+    })
+        .then(res => {
+            // Clear the input
+            document.getElementById('newName').value = ''
+            document.getElementById('power').value = ''
+
+
+            // Repopulate the list with our new name added
+            populateList()
+        })
+        .catch(err => {
+            // Clear the input
+            document.getElementById('newName').value = ''
+            document.getElementById('power').value = ''
+
+            console.error(err)
+        })
+}
+
+// Initialize the list
+populateList()
+</script>
+</body>
+</html>

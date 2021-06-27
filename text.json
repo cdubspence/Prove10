@@ -1,0 +1,28 @@
+{
+        "avengers": [
+            {
+                "name": "Tony Stark",
+                "power": "intelligence"
+            },
+            {
+                "name": "Steve Rogers",
+                "power": "Enhanced Soldier"
+            },
+            {
+                "name": "Thor Odinson",
+                "power": "God of Thunder"
+            },
+            {
+                "name": "Bruce Banner",
+                "power": "Super Strength"
+            },
+            {
+                "name": "Natasha Romanova",
+                "power": "Martial Arts"
+            },
+            {
+                "name": "Clint Barton",
+                "power": "Bow and Arrom"
+            }
+        ]
+    }
