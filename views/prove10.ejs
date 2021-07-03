@@ -20,11 +20,15 @@
         <button id="submitName" onclick="submitName()">Submit</button>
     </div>
 </div>
+<script src="/socket.io/socket.io.js"></script>
 <script>
+    var socket = io();
     const populateList = () => {
     const nameList = document.getElementById('nameList')
-
-    fetch('/fetchAll')
+    socket.emit('new hero', nameList);
+    
+    socket.on('new hero', function(add) {
+        fetch('/fetchAll')
         .then(res => res.json())
         .then(data => {
             // Clear the list first
@@ -36,16 +40,14 @@
                 li.appendChild(document.createTextNode(avenger.name, avenger.power))
                 nameList.appendChild(li)
             }
-            // for (const avenger of data.avengers) {
-            //     const li = document.createElement('li')
-            //     li.appendChild(document.createTextNode(avenger.power))
-            //     nameList.appendChild(li)
-            // }
+
         })
         .catch(err => {
             console.error(err)
         })
-}
+    });     
+        
+    }
 
 const submitName = () => {
     const newName = document.getElementById('newName').value // Grab the value of our new name
